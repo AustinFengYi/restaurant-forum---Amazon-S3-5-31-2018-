@@ -1,0 +1,51 @@
+<style>
+  .nav-label{
+    margin-bottom: 10px;
+  }
+
+  
+  .format{
+    border: solid 1px #ddd;
+    padding: 5px;
+    margin-bottom: 5px;
+  }
+</style>
+
+<div class="container">
+  <div class="row">
+    <ul class="nav nav-tabs nav-label">
+      <li role="presentation"><%= link_to "首頁", root_path %></li>
+      <li role="presentation" ><%= link_to "最新動態" , feeds_restaurants_path %></li>
+      <li role="presentation" class="active"><%= link_to "Top 10 人氣餐廳" , rankings_restaurants_path %></li>
+      <li role="presentation"><%= link_to "美食達人" , users_path %></li>
+    </ul>
+
+    <div class="col-md-11 col-md-offset-1">
+      <h1 class="text-center">Top 10 人氣餐廳 <small>(收藏數最高)</small></h1>
+      
+      <% @restaurants.each do |restaurant| %>
+        <div class="format">
+          <div class="col-sm-4 col-md-3">
+            <%= link_to restaurant_path(restaurant) do %>
+              <%= image_tag restaurant.image, class: "img-responsive center-block" %>
+            <% end %>
+          </div>
+
+          <div class="col-sm-7 col-md-8">
+              <h4><strong><%= restaurant.name %></strong> 
+                <span class="label label-default">收藏數：<%= restaurant.favorites_count %></span>
+              </h4>
+              <h5><span class="label label-success" ><%= restaurant.category.name %></span></h5>
+              <p><%= truncate(restaurant.description,length:200) %></p>
+              <p><%= link_to 'Show', restaurant_path(restaurant), class: "btn btn-primary" %>
+                <%= render partial: 'shared/favorite', locals: { restaurant: restaurant } %></p>
+          </div>
+          <div class="clearfix"></div>
+        </div>
+
+        <div class="clearfix"></div>
+      <% end %>
+    </div>
+
+  </div>
+</div>

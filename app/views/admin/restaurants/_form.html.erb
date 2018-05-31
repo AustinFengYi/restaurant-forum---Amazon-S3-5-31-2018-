@@ -1,0 +1,66 @@
+<style>
+  .field{
+    width: 65%;
+    margin: 10px auto;
+  }
+
+  .field.field-category{
+    margin-bottom: -15px;
+  }
+</style>
+
+<% if @restaurant.errors.any? %>
+  <h2>We have some errors here !</h2>
+  <ul>
+    <% @restaurant.errors.full_messages.each do |msg| %>
+      <li><%= msg %></li>
+    <% end %>
+  </ul>
+<% end %>
+
+<%= form_for [:admin,@restaurant] do |f| %>
+
+  <div class="field">
+  <%= f.label :name, "Name" %><br>
+  <%= f.text_field :name ,class:"form-control"%>
+  </div>
+
+  <div class="field field-category">
+  <%= f.label :category_id, "Category" %><br>
+  <%= f.collection_select :category_id , Category.all, :id, :name, {prompt: true}, {class: "form-control"}  %><br>
+  </div>
+
+  <div class="field">
+  <%= f.label :tel, "Tel" %><br>
+  <%= f.text_field :tel ,class:"form-control" %>
+  </div>
+
+  <div class="field">
+  <%= f.label :address, "Address" %><br>
+  <%= f.text_field :address ,class:"form-control" %>
+  </div>
+
+  <div class="field">
+  <%= f.label :opening_hours, "Opening_Hours" %><br>
+  <%= f.text_field :opening_hours  ,class:"form-control"%>
+  </div>
+  <div class="field">
+  <%= f.label :description, "Description" %><br>
+  <%= f.text_area :description ,class:"form-control"  %>
+</div>
+
+  <div class="field">
+  <%= f.label :image, "Photo" %><br>
+  <%= image_tag @restaurant.image, width:"200px" if @restaurant.image? %>
+  <%= f.file_field :image %>
+  </div>
+
+  <div class="field">
+  <%= f.submit%><br>
+</div>
+    
+<div class="field">
+  <%= link_to 'Index Page',admin_root_path,class:"btn btn-primary form-control" %>
+</div>
+
+<% end %>

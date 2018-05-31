@@ -1,0 +1,68 @@
+<style>
+  .restaurant-item{
+    border: solid 1px #ddd;
+    padding: 4px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+  }
+
+  .restaurant-item img{
+    max-height: 180px;
+    width: 100%;
+  }
+
+  .caption{
+    margin-top: 5px;
+    letter-spacing: 1px;
+  }
+
+  .nav-pills-center{
+    margin-bottom: 10px;
+    text-align: center;
+
+  }
+
+  .nav-pills-center li{
+    float: none;
+    display: inline-block;  
+  }
+
+  .nav-label{
+    margin-bottom: 10px;
+  }
+  </style>
+
+<div class="container">
+  <div class="row">
+
+    <ul class="nav nav-tabs nav-label">
+      <li role="presentation" class="active"><%= link_to "首頁", root_path %></li>
+      <li role="presentation"><%= link_to "最新動態" , feeds_restaurants_path %></li>
+      <li role="presentation"><%= link_to "Top 10 人氣餐廳" , rankings_restaurants_path %></li>
+      <li role="presentation"><%= link_to "美食達人" , users_path %></li>
+    </ul>
+
+    <ul class="nav nav-pills nav-pills-center">
+      <li role="presentation">
+        <%= link_to "全部餐廳",root_path %></li>
+      <% @categories.each do |category| %>
+        <li role="presentation" class="<%= "active" if category == @category %>">
+          <%= link_to category.name , category_path(category) %>
+        </li>
+      <% end %> 
+    </ul>
+
+    <div class="text-right">
+      <%= form_tag category_path, method: :get do %>
+        <p>
+          <%= text_field_tag :search ,params[:search] ,placeholder:"打開豐繹搜尋引擎"%>
+          <%= submit_tag "search" , :name => nil %>
+        </p>
+      <% end %>
+    </div>
+    
+    <%= render partial: "shared/restaurant_list" %>
+
+  </div>
+</div>
+

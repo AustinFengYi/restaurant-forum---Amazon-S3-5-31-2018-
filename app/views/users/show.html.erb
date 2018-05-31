@@ -1,0 +1,130 @@
+<style>
+  .profile-itemleft{
+    border: solid 1px #ddd;
+    text-align: center;
+  }
+
+  .profile-itemleft>img{
+    max-height: 200px;
+   }
+
+   .clearfix{
+    margin-bottom: 20px;
+   }
+
+  .item{
+    text-align: center;
+    color: blue;
+  }
+
+   .center-block{
+    width: 100%;
+    max-height: 80px;
+   }
+
+   </style>
+
+
+<div class="container">
+  <div class="row">
+    <section class="profile">
+      <div class="profile-itemleft col-sm-5 col-md-3">
+        <%= image_tag @user.image ,class:"img-respovsive center-block" %>
+      </div>
+
+      <div class="profile-itemright col-sm-7 col-md-9 text-center">
+        <h3><%= @user.name %></h3>
+        <p><%= @user.email %></p>
+        <p style="letter-spacing: 1px">
+          <strong><em><%= @commented_restaurants.count %></em></strong> 已評論餐廳
+          <strong><em><%= @favorited_restaurants.count %></em></strong> 已追蹤餐廳
+          <strong><em><%= @followings.count %></em></strong> followings
+          <strong><em><%= @followers.count %></em></strong> followers  
+        </p>
+        <p><%= @user.description %></p>
+        <% if @user==current_user %>
+          <%= link_to "Edit Profile",edit_user_path(@user),class:"btn btn-primary" %>
+          <%= link_to "好友列表",friend_list_user_path(@user),class:"btn btn-primary" %>
+          <!--or edit_user_path(current_user) -->
+        <% end %>
+      </div>
+      
+      <div class="clearfix"></div>
+
+      <div class="col-md-4">
+        <div class="panel panel-default panel-left panel-following">
+          <div class="panel-heading">
+            <h3 class="panel-title text-center"><strong><%= @followings.count %></strong> followings</h3>
+          </div>
+
+          <ul class="list-group">
+            <% @followings.each do |following| %>
+              <li class="list-group-item">
+                <%= link_to user_path(following) do %>
+                  <%= image_tag(following.image,height:40,width:40,class:"img-circle" )%>
+                  <%= following.email.split("@").first %>
+                <% end %>
+              </li>
+            <% end %>
+          </ul>
+        </div>
+
+        <div class="panel panel-default panel-left panel-follower">
+          <div class="panel-heading">
+            <h3 class="panel-title text-center"><strong><%= @followers.count %></strong> followers</h3>
+          </div>
+
+          <ul class="list-group">
+            <% @followers.each do |follower| %>
+              <li class="list-group-item">
+                <%= link_to user_path(follower) do %>
+                  <%= image_tag(follower.image,height:40,width:40,class:"img-circle" )%>
+                  <%= follower.email.split("@").first %>
+                <% end %>
+              </li>
+            <% end %>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="col-md-8">
+        <div class="panel panel-default panel-right panel-comment">
+          <div class="panel-heading">
+            <h3 class="panel-title text-center"><strong><%= @commented_restaurants.count %></strong> 已評論餐廳</h3>
+          </div>
+
+          <div class="panel-body">
+            <% @commented_restaurants.each do |restaurant| %>
+              <div class="item col-sm-4 col-md-3">
+                <%= link_to restaurant_path(restaurant) do %>
+                  <%= image_tag restaurant.image, class:"img-responsive center-block" %>
+                <% end %>
+                
+                <%= restaurant.name %>
+              </div>
+            <% end %> 
+          </div>  
+        </div>  
+
+        <div class="panel panel-default panel-right panel-favorite">
+          <div class="panel-heading">
+            <h3 class="panel-title text-center"><strong><%= @favorited_restaurants.count %></strong> 收藏餐廳</h3>
+          </div>
+
+          <div class="panel-body">
+            <% @favorited_restaurants.each do |restaurant| %>
+              <div class="item col-sm-4 col-md-3">
+                <%= link_to restaurant_path(restaurant) do %>
+                  <%= image_tag restaurant.image, class:"img-responsive center-block" %>
+                <% end %>
+                
+                <%= restaurant.name %>
+              </div>
+            <% end %> 
+          </div>
+        </div>  
+      </div>
+      
+    </section>
+  </div>
+</div>

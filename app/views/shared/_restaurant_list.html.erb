@@ -1,0 +1,38 @@
+<style>
+  .restaurant-item{
+    position: relative;
+    top: 0;
+    left: 0;
+    -webkit-transition: .2s linear;
+    -moz-transition: .2s linear;
+    -ms-transition: .2s linear;
+    -o-transition: .2s linear;
+    transition: .2s linear;
+  }
+
+  .restaurant-item:hover{
+    box-shadow: 0 16px 22px 0 rgba(90,91,95,0.3);
+    top:-5px;
+    /*background: gray;*/
+  }
+</style>
+
+        
+    <% @restaurants.each do |restaurant| %>
+      <div class="col-sm-6 col-md-4">
+          <div class="restaurant-item">
+            <%= link_to restaurant_path(restaurant) do %>
+              <%= image_tag restaurant.image, class:"img-responsive center-block" %>
+            <% end %>
+            <div>
+              <%= link_to restaurant.name,restaurant_path(restaurant)  %>
+            </div>
+            <p class="label label-default"><%= restaurant.category.name %></p>
+            <p class="caption"><%= truncate(restaurant.description , length:80 ) %></p>
+            <%= render partial:"shared/favorite",locals:{restaurant: restaurant} %>
+            <%= render partial:"shared/like",locals:{restaurant: restaurant} %>
+          </div>
+      </div>
+    <% end %>
+
+    <div class="text-center"><%= paginate @restaurants %></div>

@@ -1,0 +1,63 @@
+<style>
+  .table,.form-inline{
+    margin-top: 20px;
+  }
+  .item{
+    width:60%;
+    margin: 50px auto;
+  }
+  </style>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="item">
+        <div class="">
+          <%= link_to "Restaurant",admin_root_path, class: "btn btn-primary" %> |
+          <%= link_to "Category",admin_categories_path, class: "btn btn-primary" %>
+        </div>
+
+        <div class="form-inline">
+          <%= form_for [:admin, @category] do |f| %>
+            <div class="form-group">
+              <%= f.text_field :name, placeholder:"Category Name",class:"form-control" %>
+            </div>
+            <%= f.submit class:"btn btn-primary" %>
+
+            <% if @category.errors.any? %>
+              <span style="padding-left:5px; color: red;">
+                <%= @category.errors.full_messages.to_sentence %>
+              </span>
+            <% end %>
+            
+            <%= link_to "Cancel", admin_categories_path,class:"btn btn-danger" if @category.id.present? %>
+
+          <% end %>
+        </div>
+
+
+        <table class="table table-striped table-bordered">
+          <thead>
+            <tr>
+              <th class="text-center">id</th>
+              <th class="text-center">Category Name</th>
+              <th class="text-center">編輯</th>
+              <td class="text-center">刪除</td>
+            </tr>
+          </thead>
+              
+          <tbody>
+            <% @categories.each do |category| %>
+            <tr>
+              <td class="text-center"><%= category.id %></td>
+              <td class="text-center"><%= category.name %></td>
+              <td class="text-center"><%= link_to "Edit", admin_categories_path(id:category.id) %></td>
+              <td class="text-center"><%= link_to "Delete", admin_category_path(category),method: :delete, data: {confirm:"你確定要刪除嗎？"} %></td>
+            </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

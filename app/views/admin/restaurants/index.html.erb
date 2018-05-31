@@ -1,0 +1,88 @@
+<style>
+  .table{
+    table-layout: fixed;
+    word-wrap:break-word;
+    }
+
+  .table tbody tr td{
+    vertical-align: middle;
+    font-size: 25px;
+  }
+
+  .clearfix:after{
+    clear:both;
+    overflow:hidden;
+  }
+
+  .index{
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  
+</style>
+
+<div class="container-fluid">
+   <div class="row">
+    <div class="col-md-12">
+      
+      <div class="clearfix">
+        <div class="pull-left">
+          <%= link_to 'New Restaurant', new_admin_restaurant_path, class: "btn btn-primary" %>
+        </div>
+
+        <div class="pull-right">
+          <%= form_tag admin_restaurants_path, method: :get do %>
+            <p>
+              <%= text_field_tag :search ,params[:search] ,placeholder:"打開豐繹搜尋引擎"%>
+              <%= submit_tag "search" , :name => nil %>
+            </p>
+          <% end %>
+        </div>
+      </div>
+      <br>
+
+      <div class="index">
+        <%= link_to "Restaurant",admin_root_path, class: "btn btn-primary" %> |
+        <%= link_to "Category",admin_categories_path, class: "btn btn-primary" %>
+      </div>
+
+      <table class="table table-striped table-bordered">
+        <thead>
+          <tr>
+            <th class="text-center">Restaurant</th>
+            <th class="text-center">餐廳名稱</th>
+            <th class="text-center">餐廳分類</th>
+            <th class="text-center">餐廳資訊</th>
+            <th class="text-center">餐廳編輯</th>
+            <th class="text-center">刪除餐廳</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @restaurants.each do |restaurant| %>
+          <tr>
+            <td class="text-center"> 
+              <%= link_to admin_restaurant_path(restaurant) do %>
+              <%=image_tag(restaurant.image, width:"100%")%>
+              <% end %>
+            </td>
+
+            <td class="text-center"><%= restaurant.name %></td>
+            <td class="text-center"><%= restaurant.category.name %></td>
+            <td class="text-center"><%= link_to 'Show', admin_restaurant_path(restaurant) %></td>
+            <td class="text-center"><%= link_to 'Edit', edit_admin_restaurant_path(restaurant) %></td> 
+            <td class="text-center"><%= link_to 'Delete', admin_restaurant_path(restaurant), method: :delete, data: { confirm: "Are you sure?"} %></td>
+          </tr>
+          <% end %>
+        </tbody>
+      </table>
+
+      <div class="text-center">
+        <%= paginate @restaurants %>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+

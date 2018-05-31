@@ -1,0 +1,53 @@
+<style>
+  .nav-label{
+    margin-bottom: 10px;
+  }
+
+  .format{
+    text-align: center;
+    margin-bottom: 25px;
+  }
+
+  .item-image{
+    max-height: 100px;
+  }
+
+  .btn{
+    margin-top: -10px;
+  }
+</style>
+
+<div class="container">
+  <div class="row">
+    <ul class="nav nav-tabs nav-label">
+      <li role="presentation"><%= link_to "首頁", root_path %></li>
+      <li role="presentation" ><%= link_to "最新動態" , feeds_restaurants_path %></li>
+      <li role="presentation"><%= link_to "Top 10 人氣餐廳" , rankings_restaurants_path %></li>
+      <li role="presentation" class="active"><%= link_to "美食達人" , users_path %></li>
+    </ul>
+
+    <div class="col-md-12 ">
+      <h1 class="text-center">美食達人</h1>
+
+      <% @user.each do |user| %>
+        <div class="col-sm-4 col-md-3 format">
+          <%= link_to user_path(user) do %>
+            <%= image_tag user.image,class:"item-image" %>
+            <p><%= user.email.split("@").first %></p>
+          <% end %>
+          
+          <!-- != 相反條件的才運作 -->
+          <%= render partial: "shared/follow", locals: {user: user} %>
+          <%= render partial: "shared/friend", locals: { user: user } %>
+        </div>
+      <% end %>
+      
+    </div>
+
+    <div class="clearfix"></div>
+
+   
+  </div>
+</div>
+
+

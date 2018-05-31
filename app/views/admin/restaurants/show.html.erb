@@ -1,0 +1,48 @@
+<style>
+  .container_table{
+    text-align: center;
+    
+  }
+
+  .home_bg{
+    background: rgba(0, 0, 0, 0.6);  
+    padding: 10px 30px;
+    width: 80%;
+    margin: 0 auto;
+    position: relative;
+  }
+
+.show-info{
+  color: #fff;
+  margin: -5px 0;
+  text-align: center;
+}
+
+.button{
+  margin: 25px 0;
+}
+  
+</style>
+
+<div class="container">
+  <div class="row">
+    <section class="home_bg">
+      <div class="container_table">
+        <div class="show-info"><h2><%= @restaurant.name %></h2></div>
+        <div class="show-info"><%= image_tag @restaurant.image,width:'350px' %></div><br>
+        <div class="show-info">Opening Hours: <%= @restaurant.opening_hours%></div><br>
+        <div class="show-info">Tel: <%= @restaurant.tel %></div><br>
+        <div class="show-info">Address: <%= @restaurant.address %></div><br>
+        <div class="show-info">Description: <%= @restaurant.description %></div><br>
+      </div>
+    </section>
+    <div class="show-info button">
+          <%= link_to "Prev Restaurant", admin_restaurant_path(@restaurant.prev),class:"btn btn-primary" if @restaurant.prev  %>
+          
+          <%= link_to 'Back to Index', admin_root_path,class:"btn btn-primary" %>
+
+          <%= link_to "Next Restaurant", admin_restaurant_path(@restaurant.next),class:"btn btn-primary" if @restaurant.next%>
+    </div>
+  </div>
+</div>
+

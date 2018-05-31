@@ -1,0 +1,153 @@
+<style>
+  .container_table{
+    text-align: center;
+    
+  }
+
+  .home_bg{
+    background: rgba(0, 0, 0, 0.6);
+    padding: 10px 30px;
+    width: 80%;
+    margin: 0 auto;
+  }
+
+.show-info{
+  color: #fff;
+  margin: -5px 0;
+  text-align: center;
+  overflow: hidden;
+  position: relative;
+}
+
+.button{
+  margin: 25px 0;
+}
+
+.form-group{
+  width: 80%;
+  margin: 10px auto;
+}
+
+.panel-default{
+  width: 70%;
+  margin: 10px auto;
+}
+
+.panel-body > p{
+  margin: -8px 0;
+}
+
+.panel-body > .text-muted{
+
+  text-align: right;
+}
+
+.image-tag{
+  width: 380px;
+  transition: all .5s linear;
+}
+
+.image-tag:hover{
+  transform: scale(1.4);
+  transition: all .5s linear;
+  filter: brightness(0.4);
+}
+
+  
+</style>
+
+<div class="container">
+  <div class="row">
+    <section class="home_bg">
+      <div class="container_table">
+        <div class="show-info">
+          <h2>
+            <%= @restaurant.name %>
+          </h2>
+        </div>
+        <div class="show-info">
+          <%= image_tag @restaurant.image,class:"image-tag" %>
+        </div><br>
+        <div class="show-info">Opening Hours: <%= @restaurant.opening_hours%></div><br>
+        <div class="show-info">Tel: <%= @restaurant.tel %></div><br>
+        <div class="show-info">Address: <%= @restaurant.address %></div><br>
+        <div class="show-info">Description: <%= @restaurant.description %></div><br>
+
+        <div class="show-info">
+          <%= link_to "Dashboard", dashboard_restaurant_path(@restaurant),class:"btn btn-primary" %>
+          <!-- Trigger the modal with a button -->
+          <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Modal</button>
+
+          <%= render partial:"shared/favorite",locals:{restaurant: @restaurant} %>
+          
+          <%= render partial:"shared/like",locals:{restaurant: @restaurant} %>
+        </div>
+
+      </div>
+    </section>
+    <div class="show-info button">
+          <%= link_to "Prev Restaurant", restaurant_path(@restaurant.prev),class:"btn btn-primary" if @restaurant.prev  %>
+          
+          <%= link_to 'Back to Index', root_path,class:"btn btn-primary" %>
+
+          <%= link_to "Next Restaurant", restaurant_path(@restaurant.next),class:"btn btn-primary" if @restaurant.next%>
+    </div>
+
+    <!--顯示餐應評論-->
+    <% @restaurant.comments.each do |comment| %>
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title text-center"><%= comment.user.email.split("@").first %> 留言</h3>
+         </div>  
+
+        <div class="panel-body">
+          <p><%= comment.content %></p>
+          <br>
+          <p class="text-muted">
+            <em><%= time_ago_in_words(comment.created_at)%> ago - </em>
+            <% if current_user.admin? || current_user==comment.user %> 
+             <%= link_to "Delete", restaurant_comment_path(@restaurant,comment),method: :delete, data: {confirm: "Are You Sure"} %>
+            <% end %>
+          </p>
+        </div>
+      </div>
+    <% end %>
+
+    <%= form_for [@restaurant,@comment] do |f| %>
+      <div class="form-group">
+        <%= f.text_area :content, placeholder:"留個言吧", class:"form-control" %>
+      </div>
+      <div class="form-group">
+        <%= f.submit "Comment" ,class:"btn btn-primary"  %>
+        <%= f.button "Cancel",type: :reset , class:"btn btn-danger" %>
+      </div>
+    <% end %>
+
+  </div>
+</div>
+
+        <!-- Modal -->
+        <div class="modal fade" id="myModal" role="dialog">
+          <div class="modal-dialog">
+          
+            <!-- Modal content-->
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title text-center"><%= @restaurant.name %>'s Dashboard</h4>
+              </div>
+              <div class="modal-body">
+                <p>有 <em><strong><%= @restaurant.comments.count %></strong></em> 筆評論</p>
+                <p>這家餐廳的平均價位為 $XXX</p>
+                <p>有 XX 人收藏這家餐廳</p>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              </div>
+            </div>
+            
+          </div>
+        </div>
+
+  
+
